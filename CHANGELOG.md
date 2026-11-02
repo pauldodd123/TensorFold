@@ -4,6 +4,8 @@ Each release's page on GitHub has its notes and measurements. See [the 1.0.0 rel
 
 ## Unreleased
 
+- Qwen4 on CUDA drops its checkpoint from the page cache after loading, and tensor-parallel loaders drop theirs only once every rank has finished loading, so ranks on one host no longer evict pages another is still reading (#1868).
+
 - On M5 Macs, opt-in: `TF_ATTENTION_PV_FP32=1` keeps attention's P x V at full fp32 for Nemotron's prompt attention, closer to float64 (output cells off the nearest bf16 value fall from about 1.1M to 1.8K of 8.6M), at a large prompt-speed cost (30% to 87% slower at 2K to 32K). Unset, nothing changes (part of #1772).
 
 - The benchmark clients refuse a nonpositive `--tokens`, `--reps` or `--levels` entry, or a malformed `--levels` list, with a clear error and exit status 2 before any request, instead of failing mid-run or writing zero-stream cells (#1869, fixes #1867). Thanks to @garvrao80.
